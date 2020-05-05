@@ -7,13 +7,12 @@ import { ListItem, HomeworkDetails } from '..';
 
 export class App extends Component {
   state = {
-    homeworks: [],
-    homeworkService: {}
+    homeworks: []
   }
 
   async componentDidMount() {
-    const homeworks = await this.state.homeworkService.fetchList();
-    await this.setState({ homeworkService: new HomeworkService()});
+    this.homeworkService = new HomeworkService();
+    const homeworks = await this.homeworkService.fetchList();
     this.setState({ homeworks });
   }
 
@@ -22,14 +21,14 @@ export class App extends Component {
 
       case 'delete':
         try {
-          const updateHw = await this.state.homeworkService.deleteOne(action.value.id);
+          const updateHw = await this.homeworkService.deleteOne(action.value.id);
           this.setState({ homeworks: updateHw });
         } catch (ignore) { }
         break;
 
       case 'update':
         try {
-          const newHomeworks = await this.state.homeworkService.updateOne(action.value, this.state.homeworks);
+          const newHomeworks = await this.homeworkService.updateOne(this.state.homeworks, action);
           this.setState({ homeworks: newHomeworks });  
         } catch (ignore) { }
         break;

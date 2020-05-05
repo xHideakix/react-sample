@@ -18,12 +18,11 @@ export class HomeworkService {
     return await this.fetchList();
   }
 
-  async updateOne(lesson) {
-    const req = await fetch(`${BACKEND_SERVER}/api/homeworks/${lesson.id}`, {
+  async updateOne(homeworks, action) {
+    const req = await fetch(`${BACKEND_SERVER}/api/homeworks/${action.value.id}`, {
       method: 'PUT',
-      body: JSON.stringify(lesson)
+      body: JSON.stringify(action.value)
     });
-    const homeworks = await this.fetchList();
     const result = await req.json();
     const index = findIndex(homeworks, { id: result.id });
     if (index > -1) {
